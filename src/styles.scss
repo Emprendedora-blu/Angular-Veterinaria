@@ -1,0 +1,19 @@
+/* Estilos globales — Bootstrap se carga vía angular.json */
+:root {
+  --vet-primary: #0d6efd;
+}
+
+body {
+  background: #f6f8fb;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.nav-link.active {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.card {
+  border: none;
+  border-radius: 0.75rem;
+}

@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0"><i class="bi bi-piggy-bank me-2"></i>Mascotas</h2>
+  <a class="btn btn-primary" routerLink="/mascotas/nueva">
+    <i class="bi bi-plus-lg me-1"></i>Nueva mascota
+  </a>
+</div>
+
+<ng-container *ngIf="(mascotas$ | async) as mascotas">
+  <div *ngIf="mascotas.length === 0" class="alert alert-info">
+    Aún no hay mascotas registradas.
+  </div>
+
+  <div class="row g-3" *ngIf="mascotas.length">
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let m of mascotas">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <h5 class="card-title mb-1">{{ m.nombre }}</h5>
+            <span class="badge bg-secondary text-capitalize">{{ m.especie }}</span>
+          </div>
+          <p class="text-muted small mb-2">{{ m.raza }} · {{ m.sexo }}</p>
+          <ul class="list-unstyled small mb-3">
+            <li><strong>Edad:</strong> {{ m.fechaNacimiento | edadMascota }}</li>
+            <li><strong>Dueño:</strong> {{ nombreDueno(m.duenoId) }}</li>
+            <li *ngIf="m.peso"><strong>Peso:</strong> {{ m.peso }} kg</li>
+          </ul>
+          <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-outline-primary" [routerLink]="['/mascotas', m.id, 'editar']">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <a class="btn btn-sm btn-outline-info" [routerLink]="['/historial', m.id]">
+              <i class="bi bi-journal-medical"></i> Historial
+            </a>
+            <button class="btn btn-sm btn-outline-danger ms-auto" (click)="eliminar(m)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

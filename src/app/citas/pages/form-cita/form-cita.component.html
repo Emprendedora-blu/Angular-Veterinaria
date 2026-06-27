@@ -1,0 +1,56 @@
+<h2 class="mb-3">
+  <i class="bi bi-calendar-plus me-2"></i>
+  {{ editandoId ? 'Editar cita' : 'Nueva cita' }}
+</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate class="card">
+  <div class="card-body row g-3">
+    <div class="col-md-6">
+      <label class="form-label">Mascota</label>
+      <select class="form-select" formControlName="mascotaId"
+        [class.is-invalid]="f['mascotaId'].invalid && f['mascotaId'].touched">
+        <option value="">Selecciona…</option>
+        <option *ngFor="let m of mascotas$ | async" [value]="m.id">{{ m.nombre }} ({{ m.especie }})</option>
+      </select>
+      <div class="invalid-feedback">Selecciona una mascota.</div>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Fecha y hora</label>
+      <input type="datetime-local" class="form-control" formControlName="fecha"
+        [class.is-invalid]="f['fecha'].invalid && f['fecha'].touched" />
+      <div class="invalid-feedback">
+        <span *ngIf="f['fecha'].errors?.['required']">Fecha requerida.</span>
+        <span *ngIf="f['fecha'].errors?.['pasada']">La fecha no puede ser en el pasado.</span>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <label class="form-label">Motivo</label>
+      <input class="form-control" formControlName="motivo"
+        [class.is-invalid]="f['motivo'].invalid && f['motivo'].touched" />
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Veterinario</label>
+      <input class="form-control" formControlName="veterinario"
+        [class.is-invalid]="f['veterinario'].invalid && f['veterinario'].touched" />
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Estado</label>
+      <select class="form-select" formControlName="estado">
+        <option value="pendiente">Pendiente</option>
+        <option value="confirmada">Confirmada</option>
+        <option value="atendida">Atendida</option>
+        <option value="cancelada">Cancelada</option>
+      </select>
+    </div>
+    <div class="col-12">
+      <label class="form-label">Notas</label>
+      <textarea class="form-control" rows="2" formControlName="notas"></textarea>
+    </div>
+  </div>
+  <div class="card-footer d-flex gap-2">
+    <button type="submit" class="btn btn-primary">
+      <i class="bi bi-save me-1"></i>Guardar
+    </button>
+    <a class="btn btn-outline-secondary" routerLink="/citas">Cancelar</a>
+  </div>
+</form>

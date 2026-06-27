@@ -1,0 +1,63 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">
+    <i class="bi bi-journal-medical me-2"></i>
+    Historial — {{ mascota?.nombre ?? 'Mascota' }}
+  </h2>
+  <a class="btn btn-outline-secondary" routerLink="/historial">
+    <i class="bi bi-arrow-left"></i> Volver
+  </a>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-5">
+    <div class="card">
+      <div class="card-header"><i class="bi bi-plus-circle me-2"></i>Nueva entrada</div>
+      <form [formGroup]="form" (ngSubmit)="agregar()" class="card-body">
+        <div class="mb-2">
+          <label class="form-label">Fecha</label>
+          <input type="date" class="form-control" formControlName="fecha"
+            [class.is-invalid]="f['fecha'].invalid && f['fecha'].touched" />
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Diagnóstico</label>
+          <input class="form-control" formControlName="diagnostico"
+            [class.is-invalid]="f['diagnostico'].invalid && f['diagnostico'].touched" />
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Tratamiento</label>
+          <textarea class="form-control" rows="2" formControlName="tratamiento"
+            [class.is-invalid]="f['tratamiento'].invalid && f['tratamiento'].touched"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Veterinario</label>
+          <input class="form-control" formControlName="veterinario"
+            [class.is-invalid]="f['veterinario'].invalid && f['veterinario'].touched" />
+        </div>
+        <button class="btn btn-primary w-100" type="submit">
+          <i class="bi bi-save me-1"></i>Registrar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div *ngIf="entradas.length === 0" class="alert alert-info">
+      Aún no hay entradas en el historial.
+    </div>
+    <div class="timeline">
+      <div class="card mb-2" *ngFor="let e of entradas">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <h6 class="mb-1">{{ e.diagnostico }}</h6>
+            <small class="text-muted">{{ e.fecha | date:'longDate' }}</small>
+          </div>
+          <p class="mb-1"><strong>Tratamiento:</strong> {{ e.tratamiento }}</p>
+          <small class="text-muted">Atendido por {{ e.veterinario }}</small>
+          <button class="btn btn-sm btn-outline-danger float-end" (click)="eliminar(e)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
