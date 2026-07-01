@@ -14,21 +14,56 @@
       </select>
       <div class="invalid-feedback">Selecciona una mascota.</div>
     </div>
+
     <div class="col-md-6">
       <label class="form-label">Fecha y hora</label>
-      <input type="datetime-local" class="form-control" formControlName="fecha"
-        [min]="minFecha"
-        [class.is-invalid]="f['fecha'].invalid && f['fecha'].touched" />
+      <input type="hidden" formControlName="fecha" />
+      <div class="row g-2">
+        <div class="col-12">
+          <input type="date" class="form-control"
+            [class.is-invalid]="f['fecha'].invalid && f['fecha'].touched"
+            [min]="minDate"
+            [value]="fechaDate"
+            (change)="fechaDate = $any($event.target).value; actualizarFecha()" />
+        </div>
+        <div class="col-4">
+          <select class="form-select"
+            [class.is-invalid]="f['fecha'].invalid && f['fecha'].touched"
+            [value]="fechaHora"
+            (change)="fechaHora = $any($event.target).value; actualizarFecha()">
+            <option *ngFor="let h of horas" [value]="h">{{ h }}</option>
+          </select>
+        </div>
+        <div class="col-4">
+          <select class="form-select"
+            [class.is-invalid]="f['fecha'].invalid && f['fecha'].touched"
+            [value]="fechaMinuto"
+            (change)="fechaMinuto = $any($event.target).value; actualizarFecha()">
+            <option value="00">:00</option>
+            <option value="30">:30</option>
+          </select>
+        </div>
+        <div class="col-4">
+          <select class="form-select"
+            [class.is-invalid]="f['fecha'].invalid && f['fecha'].touched"
+            [value]="fechaAmPm"
+            (change)="fechaAmPm = $any($event.target).value; actualizarFecha()">
+            <option value="AM">AM</option>
+            <option value="PM">PM</option>
+          </select>
+        </div>
+      </div>
       <div class="form-text text-muted">
         <i class="bi bi-clock me-1"></i>Atención: <strong>Lun–Vie · 8:00 AM – 8:00 PM</strong>
       </div>
-      <div class="invalid-feedback">
+      <div *ngIf="f['fecha'].invalid && f['fecha'].touched" class="text-danger small mt-1">
         <span *ngIf="f['fecha'].errors?.['required']">Fecha requerida.</span>
         <span *ngIf="f['fecha'].errors?.['pasada']">La fecha no puede ser en el pasado.</span>
         <span *ngIf="f['fecha'].errors?.['fueraDia']">Solo atendemos de Lunes a Viernes.</span>
         <span *ngIf="f['fecha'].errors?.['fueraHorario']">El horario de atención es de 8:00 AM a 8:00 PM.</span>
       </div>
     </div>
+
     <div class="col-md-8">
       <label class="form-label">Motivo</label>
       <input class="form-control" formControlName="motivo"

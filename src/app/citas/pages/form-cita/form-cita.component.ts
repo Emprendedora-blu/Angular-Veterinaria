@@ -15,6 +15,12 @@ export class FormCitaComponent implements OnInit {
   mascotas$!: Observable<Mascota[]>;
   editandoId?: string;
 
+  fechaDate = '';
+  fechaHora = '8';
+  fechaMinuto = '00';
+  fechaAmPm = 'AM';
+  readonly horas = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+
   constructor(
     private fb: FormBuilder,
     private svc: CitasService,
@@ -41,14 +47,37 @@ export class FormCitaComponent implements OnInit {
       if (c) {
         this.editandoId = id;
         this.form.patchValue(c);
+        if (c.fecha) {
+          const d = new Date(c.fecha);
+          this.fechaDate = c.fecha.split('T')[0];
+          let h = d.getHours();
+          this.fechaAmPm = h >= 12 ? 'PM' : 'AM';
+          if (h > 12) h -= 12;
+          if (h === 0) h = 12;
+          this.fechaHora = h.toString();
+          this.fechaMinuto = d.getMinutes().toString().padStart(2, '0');
+        }
       }
     }
   }
 
   get f() { return this.form.controls; }
 
-  get minFecha(): string {
-    return new Date().toISOString().slice(0, 16);
+  get minDate(): string {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  actualizarFecha(): void {
+    if (!this.fechaDate) {
+      this.form.get('fecha')?.setValue('');
+      return;
+    }
+    let h = parseInt(this.fechaHora, 10);
+    if (this.fechaAmPm === 'PM' && h !== 12) h += 12;
+    if (this.fechaAmPm === 'AM' && h === 12) h = 0;
+    const hStr = h.toString().padStart(2, '0');
+    this.form.get('fecha')?.setValue(`${this.fechaDate}T${hStr}:${this.fechaMinuto}`);
+    this.form.get('fecha')?.markAsTouched();
   }
 
   private readonly futuraValidator = (control: { value: string }) => {
@@ -61,7 +90,7 @@ export class FormCitaComponent implements OnInit {
   private readonly horarioLaboralValidator = (control: { value: string }) => {
     if (!control.value) return null;
     const fecha = new Date(control.value);
-    const dia = fecha.getDay(); // 0=Dom, 1=Lun ... 6=Sáb
+    const dia = fecha.getDay();
     const hora = fecha.getHours();
     if (dia === 0 || dia === 6) return { fueraDia: true };
     if (hora < 8 || hora >= 20) return { fueraHorario: true };
