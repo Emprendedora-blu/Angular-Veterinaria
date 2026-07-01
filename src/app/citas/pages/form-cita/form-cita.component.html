@@ -20,13 +20,13 @@
         [min]="minFecha"
         [class.is-invalid]="f['fecha'].invalid && f['fecha'].touched" />
       <div class="form-text text-muted">
-        <i class="bi bi-clock me-1"></i>Atención: <strong>Lun–Vie · 08:00–20:00</strong>
+        <i class="bi bi-clock me-1"></i>Atención: <strong>Lun–Vie · 8:00 AM – 8:00 PM</strong>
       </div>
       <div class="invalid-feedback">
         <span *ngIf="f['fecha'].errors?.['required']">Fecha requerida.</span>
         <span *ngIf="f['fecha'].errors?.['pasada']">La fecha no puede ser en el pasado.</span>
-        <span *ngIf="f['fecha'].errors?.['fueraDia']">Solo atendemos de lunes a viernes.</span>
-        <span *ngIf="f['fecha'].errors?.['fueraHorario']">El horario de atención es de 8:00 a 20:00.</span>
+        <span *ngIf="f['fecha'].errors?.['fueraDia']">Solo atendemos de Lunes a Viernes.</span>
+        <span *ngIf="f['fecha'].errors?.['fueraHorario']">El horario de atención es de 8:00 AM a 8:00 PM.</span>
       </div>
     </div>
     <div class="col-md-8">
