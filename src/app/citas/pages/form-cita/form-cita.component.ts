@@ -28,7 +28,7 @@ export class FormCitaComponent implements OnInit {
 
     this.form = this.fb.group({
       mascotaId: ['', Validators.required],
-      fecha: ['', [Validators.required, this.futuraValidator]],
+      fecha: ['', [Validators.required, this.futuraValidator, this.horarioLaboralValidator]],
       motivo: ['', [Validators.required, Validators.minLength(3)]],
       veterinario: ['', Validators.required],
       estado: ['pendiente', Validators.required],
@@ -47,12 +47,26 @@ export class FormCitaComponent implements OnInit {
 
   get f() { return this.form.controls; }
 
-  private futuraValidator(control: { value: string }) {
+  get minFecha(): string {
+    return new Date().toISOString().slice(0, 16);
+  }
+
+  private readonly futuraValidator = (control: { value: string }) => {
     if (!control.value) return null;
     return new Date(control.value).getTime() >= Date.now() - 60_000
       ? null
       : { pasada: true };
-  }
+  };
+
+  private readonly horarioLaboralValidator = (control: { value: string }) => {
+    if (!control.value) return null;
+    const fecha = new Date(control.value);
+    const dia = fecha.getDay(); // 0=Dom, 1=Lun ... 6=Sáb
+    const hora = fecha.getHours();
+    if (dia === 0 || dia === 6) return { fueraDia: true };
+    if (hora < 8 || hora >= 20) return { fueraHorario: true };
+    return null;
+  };
 
   submit(): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }

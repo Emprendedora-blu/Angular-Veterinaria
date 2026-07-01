@@ -1,6 +1,6 @@
-/**
- * Clase base abstracta — demuestra POO: abstracción + encapsulamiento.
- * Usada como base para Dueno (herencia).
+/*
+Clase base abstracta — demuestra POO: abstracción + encapsulamiento.
+Usada como base para Dueno (herencia).
  */
 export abstract class Persona {
   protected readonly _id: string;
