@@ -2,7 +2,6 @@ import { Directive, ElementRef, Input, OnChanges, Renderer2 } from '@angular/cor
 
 /*
 Resalta visualmente una cita si la fecha ocurre dentro de las próximas N horas.
-Uso: <tr [appResaltarCita]="cita.fecha" [umbralHoras]="24">
  */
 @Directive({ selector: '[appResaltarCita]' })
 export class ResaltarCitaDirective implements OnChanges {

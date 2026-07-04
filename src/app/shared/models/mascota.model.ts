@@ -10,7 +10,7 @@ export interface Mascota {
   especieOtra?: string;
   raza: string;
   sexo: Sexo;
-  fechaNacimiento: string; // ISO
+  fechaNacimiento: string;
   peso?: number;
   pesoUnidad?: 'kg' | 'g';
   notas?: string;

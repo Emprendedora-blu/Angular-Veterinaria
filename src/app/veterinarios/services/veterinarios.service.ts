@@ -5,7 +5,7 @@ import { Veterinario } from '../../shared/models/veterinario.model';
 const VETERINARIOS: Veterinario[] = [
   {
     id: 'v1',
-    nombre: 'Dr. Josué Ramírez',
+    nombre: 'Dr. Jorge Ramírez',
     especialidad: 'Medicina general',
     dias: 'Lun - Vie',
     horaInicio: '8:00 AM',
@@ -13,7 +13,7 @@ const VETERINARIOS: Veterinario[] = [
   },
   {
     id: 'v2',
-    nombre: 'Dra. Ana Torres',
+    nombre: 'Dra. Mariela Torres',
     especialidad: 'Cirugía',
     dias: 'Lun - Vie',
     horaInicio: '3:00 PM',
