@@ -26,17 +26,29 @@ export class MascotasService {
     return this.mascotas$.value.find((m) => m.id === id);
   }
 
-  guardarMascota(data: Omit<Mascota, 'id'> & { id?: string }): Mascota {
+  guardarMascota(data: Omit<Mascota, 'id' | 'codigo'> & { id?: string }): Mascota {
     const lista = [...this.mascotas$.value];
+    let resultado: Mascota;
     if (data.id) {
       const idx = lista.findIndex((m) => m.id === data.id);
-      if (idx >= 0) lista[idx] = data as Mascota;
+      resultado = { ...lista[idx], ...data } as Mascota;
+      if (!resultado.codigo) resultado.codigo = this.generarCodigo();
+      if (idx >= 0) lista[idx] = resultado;
     } else {
-      lista.push({ ...data, id: this.storage.uid() });
+      resultado = { ...data, id: this.storage.uid(), codigo: this.generarCodigo() };
+      lista.push(resultado);
     }
     this.mascotas$.next(lista);
     this.storage.set(KEY_MASCOTAS, lista);
-    return lista[lista.length - 1];
+    return resultado;
+  }
+
+  private generarCodigo(): string {
+    const numeros = this.mascotas$.value
+      .map((m) => parseInt(m.codigo?.split('-')[1] ?? '', 10))
+      .filter((n) => !isNaN(n));
+    const siguiente = (numeros.length ? Math.max(...numeros) : 0) + 1;
+    return `M-${siguiente.toString().padStart(4, '0')}`;
   }
 
   eliminarMascota(id: string): void {

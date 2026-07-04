@@ -13,6 +13,7 @@ export class FormMascotaComponent implements OnInit {
   duenoForm!: FormGroup;
   duenos: DuenoDTO[] = [];
   editandoId?: string;
+  codigoActual?: string;
   crearNuevoDueno = false;
 
   constructor(
@@ -37,6 +38,7 @@ export class FormMascotaComponent implements OnInit {
       duenoId: ['', Validators.required],
       nombre: ['', [Validators.required, Validators.minLength(2)]],
       especie: ['perro', Validators.required],
+      especieOtra: [''],
       raza: ['', Validators.required],
       sexo: ['macho', Validators.required],
       fechaNacimiento: ['', Validators.required],
@@ -44,11 +46,23 @@ export class FormMascotaComponent implements OnInit {
       notas: [''],
     });
 
+    this.form.get('especie')?.valueChanges.subscribe((especie) => {
+      const especieOtra = this.form.get('especieOtra')!;
+      if (especie === 'otro') {
+        especieOtra.setValidators([Validators.required, Validators.minLength(2)]);
+      } else {
+        especieOtra.clearValidators();
+        especieOtra.setValue('');
+      }
+      especieOtra.updateValueAndValidity();
+    });
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       const m = this.svc.getMascota(id);
       if (m) {
         this.editandoId = id;
+        this.codigoActual = m.codigo;
         this.form.patchValue(m);
       }
     }

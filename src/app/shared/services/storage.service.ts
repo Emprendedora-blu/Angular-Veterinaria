@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-/** Servicio genérico tipado para persistir en localStorage. */
+//Servicio genérico tipado para persistir en localStorage.
 @Injectable({ providedIn: 'root' })
 export class StorageService {
   get<T>(key: string, fallback: T): T {

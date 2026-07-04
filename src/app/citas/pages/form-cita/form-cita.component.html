@@ -10,7 +10,7 @@
       <select class="form-select" formControlName="mascotaId"
         [class.is-invalid]="f['mascotaId'].invalid && f['mascotaId'].touched">
         <option value="">Selecciona…</option>
-        <option *ngFor="let m of mascotas$ | async" [value]="m.id">{{ m.nombre }} ({{ m.especie }})</option>
+        <option *ngFor="let m of mascotas$ | async" [value]="m.id">{{ m.nombre }} ({{ m.especie === 'otro' && m.especieOtra ? m.especieOtra : m.especie }})</option>
       </select>
       <div class="invalid-feedback">Selecciona una mascota.</div>
     </div>
@@ -27,21 +27,21 @@
             (change)="fechaDate = $any($event.target).value; actualizarFecha()" />
         </div>
         <div class="col-4">
-          <select class="form-select"
+          <input type="number" class="form-control text-center px-1"
             [class.is-invalid]="f['fecha'].invalid && f['fecha'].touched"
+            min="1" max="12" placeholder="H"
             [value]="fechaHora"
-            (change)="fechaHora = $any($event.target).value; actualizarFecha()">
-            <option *ngFor="let h of horas" [value]="h">{{ h }}</option>
-          </select>
+            (change)="fechaHora = $any($event.target).value; actualizarFecha()" />
         </div>
         <div class="col-4">
-          <select class="form-select"
-            [class.is-invalid]="f['fecha'].invalid && f['fecha'].touched"
-            [value]="fechaMinuto"
-            (change)="fechaMinuto = $any($event.target).value; actualizarFecha()">
-            <option value="00">:00</option>
-            <option value="30">:30</option>
-          </select>
+          <div class="input-group">
+            <span class="input-group-text px-2">:</span>
+            <input type="number" class="form-control text-center px-1"
+              [class.is-invalid]="f['fecha'].invalid && f['fecha'].touched"
+              min="0" max="59" placeholder="00"
+              [value]="+fechaMinuto"
+              (change)="fechaMinuto = $any($event.target).value.toString().padStart(2,'0'); actualizarFecha()" />
+          </div>
         </div>
         <div class="col-4">
           <select class="form-select"
@@ -71,8 +71,15 @@
     </div>
     <div class="col-md-4">
       <label class="form-label">Veterinario</label>
-      <input class="form-control" formControlName="veterinario"
-        [class.is-invalid]="f['veterinario'].invalid && f['veterinario'].touched" />
+      <select class="form-select" formControlName="veterinario"
+        [class.is-invalid]="f['veterinario'].invalid && f['veterinario'].touched">
+        <option value="">Selecciona…</option>
+        <option *ngFor="let v of veterinarios$ | async" [value]="v.nombre">
+          {{ v.nombre }} ({{ v.horaInicio }}–{{ v.horaFin }})
+        </option>
+      </select>
+      <div class="form-text text-muted">Lun – Vie</div>
+      <div class="invalid-feedback">Selecciona un veterinario.</div>
     </div>
     <div class="col-md-4">
       <label class="form-label">Estado</label>

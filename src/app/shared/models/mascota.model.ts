@@ -3,9 +3,11 @@ export type Sexo = 'macho' | 'hembra';
 
 export interface Mascota {
   id: string;
+  codigo: string;
   duenoId: string;
   nombre: string;
   especie: Especie;
+  especieOtra?: string;
   raza: string;
   sexo: Sexo;
   fechaNacimiento: string; // ISO

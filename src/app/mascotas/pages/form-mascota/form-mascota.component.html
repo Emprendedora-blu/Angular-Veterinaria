@@ -1,6 +1,7 @@
 <h2 class="mb-3">
   <i class="bi bi-piggy-bank me-2"></i>
   {{ editandoId ? 'Editar mascota' : 'Nueva mascota' }}
+  <span *ngIf="codigoActual" class="badge bg-secondary align-middle">{{ codigoActual }}</span>
 </h2>
 
 <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
@@ -72,6 +73,10 @@
           <option value="roedor">Roedor</option>
           <option value="otro">Otro</option>
         </select>
+        <input *ngIf="f['especie'].value === 'otro'" class="form-control mt-2"
+          placeholder="¿Cuál especie?" formControlName="especieOtra"
+          [class.is-invalid]="f['especieOtra'].invalid && f['especieOtra'].touched" />
+        <div class="invalid-feedback">Escribe la especie (mín. 2 caracteres).</div>
       </div>
       <div class="col-md-3">
         <label class="form-label">Sexo</label>

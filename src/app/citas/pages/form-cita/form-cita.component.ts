@@ -4,7 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CitasService } from '../../services/citas.service';
 import { MascotasService } from '../../../mascotas/services/mascotas.service';
+import { VeterinariosService } from '../../../veterinarios/services/veterinarios.service';
 import { Mascota } from '../../../shared/models/mascota.model';
+import { Veterinario } from '../../../shared/models/veterinario.model';
 
 @Component({
   selector: 'app-form-cita',
@@ -13,24 +15,26 @@ import { Mascota } from '../../../shared/models/mascota.model';
 export class FormCitaComponent implements OnInit {
   form!: FormGroup;
   mascotas$!: Observable<Mascota[]>;
+  veterinarios$!: Observable<Veterinario[]>;
   editandoId?: string;
 
   fechaDate = '';
   fechaHora = '8';
   fechaMinuto = '00';
   fechaAmPm = 'AM';
-  readonly horas = ['1','2','3','4','5','6','7','8','9','10','11','12'];
 
   constructor(
     private fb: FormBuilder,
     private svc: CitasService,
     private mascotas: MascotasService,
+    private veterinarios: VeterinariosService,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
     this.mascotas$ = this.mascotas.getMascotas();
+    this.veterinarios$ = this.veterinarios.getVeterinarios();
 
     this.form = this.fb.group({
       mascotaId: ['', Validators.required],

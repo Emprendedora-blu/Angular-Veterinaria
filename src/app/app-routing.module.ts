@@ -18,6 +18,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./historial/historial.module').then((m) => m.HistorialModule),
   },
+  {
+    path: 'diagnostico',
+    loadChildren: () =>
+      import('./diagnostico/diagnostico.module').then((m) => m.DiagnosticoModule),
+  },
   { path: '**', redirectTo: 'mascotas' },
 ];
 
