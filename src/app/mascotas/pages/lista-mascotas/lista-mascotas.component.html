@@ -25,7 +25,7 @@
           <ul class="list-unstyled small mb-3">
             <li><strong>Edad:</strong> {{ m.fechaNacimiento | edadMascota }}</li>
             <li><strong>Dueño:</strong> {{ nombreDueno(m.duenoId) }}</li>
-            <li *ngIf="m.peso"><strong>Peso:</strong> {{ m.peso }} kg</li>
+            <li *ngIf="m.peso"><strong>Peso:</strong> {{ m.peso }} {{ m.pesoUnidad || 'kg' }}</li>
           </ul>
           <div class="d-flex gap-2">
             <a class="btn btn-sm btn-outline-primary" [routerLink]="['/mascotas', m.id, 'editar']">

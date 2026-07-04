@@ -43,6 +43,7 @@ export class FormMascotaComponent implements OnInit {
       sexo: ['macho', Validators.required],
       fechaNacimiento: ['', Validators.required],
       peso: [null, [Validators.min(0)]],
+      pesoUnidad: ['kg'],
       notas: [''],
     });
 
